@@ -18,16 +18,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Привязываем авторизацию к нажатию кнопки
         binding.loginButton.setOnClickListener {
             val authLauncher = VK.login(this) { result: VKAuthenticationResult ->
                 when (result) {
                     is VKAuthenticationResult.Success -> {
-                        // Успешная авторизация, получаем данные пользователя
                         fetchCurrentUser()
                     }
                     is VKAuthenticationResult.Failed -> {
-                        // Ошибка авторизации
                         Log.e(TAG, "Ошибка авторизации: ${result.exception}")
                     }
                 }
@@ -36,14 +33,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Функция для получения данных текущего пользователя
     private fun fetchCurrentUser() {
         VK.execute(VKUsersCommand(), object : VKApiCallback<List<VKUser>> {
             override fun success(result: List<VKUser>) {
                 if (result.isNotEmpty()) {
                     val currentUser = result[0]
                     Log.d(TAG, "Текущий пользователь: ${currentUser.firstName} ${currentUser.lastName}")
-                    // Здесь можно обновить UI, например, вывести имя в TextView
                 }
             }
 

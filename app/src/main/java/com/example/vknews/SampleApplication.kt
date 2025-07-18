@@ -7,12 +7,13 @@ import com.vk.api.sdk.VKTokenExpiredHandler
 class SampleApplication : Application() {
     override fun onCreate() {
         super.onCreate()
+        VK.initialize(this) // Для 4.1.0 достаточно контекста
         VK.addTokenExpiredHandler(tokenTracker)
     }
 
-    private val tokenTracker = object: VKTokenExpiredHandler {
+    private val tokenTracker = object : VKTokenExpiredHandler {
         override fun onTokenExpired() {
-            // token expired
+            android.util.Log.d("VKToken", "Токен истек, требуется повторная авторизация")
         }
     }
 }
